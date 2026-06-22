@@ -107,6 +107,37 @@ pnpm lint
 pnpm format
 ```
 
+## 🚀 Build & Release
+
+GuildPass Mobile uses **EAS Build** with three distinct profiles:
+
+| Profile       | Distribution  | Channel        | Use Case                     |
+|---------------|---------------|----------------|------------------------------|
+| `development` | Internal      | `development`  | Local dev & debug builds     |
+| `preview`     | Internal      | `preview`      | QA / TestFlight / Beta       |
+| `production`  | Store         | `production`   | App Store & Play Store       |
+
+```bash
+# Development build (APK / debug)
+eas build --profile development --platform all
+
+# Preview build (AAB / release for testers)
+eas build --profile preview --platform all
+
+# Production build (AAB / release for stores)
+eas build --profile production --platform all
+
+# Submit to stores
+eas submit --profile production --platform ios
+eas submit --profile production --platform android
+```
+
+See [docs/release.md](./docs/release.md) for the full release guide, environment matrix, and preflight checklist.
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and fill in your values. Environment variables prefixed with `EXPO_PUBLIC_` are available at runtime. Sensitive values must be stored as EAS Secrets.
+
 ## 🗺️ Roadmap
 
 - [ ] **Native Wallet Integration**: Support for WalletConnect, MetaMask, and Coinbase Wallet.
