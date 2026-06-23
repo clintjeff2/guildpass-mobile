@@ -81,6 +81,9 @@ export default function Profile() {
                 onPress={() => router.push("/guilds")}
                 activeOpacity={0.7}
                 className="mb-4"
+                accessibilityRole="link"
+                accessibilityLabel="My Guilds"
+                accessibilityHint="View your memberships and roles"
               >
                 <Card className="flex-row justify-between items-center">
                   <View>
@@ -95,6 +98,9 @@ export default function Profile() {
                 onPress={() => router.push("/access-check")}
                 activeOpacity={0.7}
                 className="mb-4"
+                accessibilityRole="link"
+                accessibilityLabel="Access Check"
+                accessibilityHint="Verify resource access status"
               >
                 <Card className="flex-row justify-between items-center">
                   <View>
@@ -109,6 +115,9 @@ export default function Profile() {
                 onPress={() => router.push("/settings")}
                 activeOpacity={0.7}
                 className="mb-4"
+                accessibilityRole="link"
+                accessibilityLabel="App Settings"
+                accessibilityHint="Configuration and info"
               >
                 <Card className="flex-row justify-between items-center">
                   <View>
