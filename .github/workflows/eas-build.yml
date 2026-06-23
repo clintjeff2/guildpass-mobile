@@ -47,7 +47,7 @@ jobs:
           git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Type check
         run: pnpm typecheck
@@ -87,7 +87,7 @@ jobs:
           git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
