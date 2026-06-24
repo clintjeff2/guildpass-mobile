@@ -88,5 +88,3 @@ Note: `tests/api.test.ts` and `tests/components.test.tsx` fail with pre-existing
 ## Additional Notes
 
 The `connectManually` return type changed from `void` to `{ success: boolean; error?: string }`. All callers in `profile.tsx` have been updated. The Zustand store's `setWalletAddress` type signature is unchanged — it still accepts `string` but now silently ignores invalid values (returns early). This is intentional: the store is a defensive last line of defence; UI-level callers should always go through `connectManually` to get actionable error messages.
-
-closes issue #26
