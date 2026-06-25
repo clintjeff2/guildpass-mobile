@@ -36,6 +36,11 @@ export default function GuildDetail() {
   // GuildPass Mobile: Variable binding and property initialization.
   const { getMembership } = useMembership(walletAddress);
 
+  // GuildPass Mobile: Validate guildId parameter
+  if (!guildId || typeof guildId !== "string") {
+    return <ErrorState message="Invalid guild ID provided" />;
+  }
+
   // GuildPass Mobile: Local UI-scoped constant or state representation.
   const guildQuery = getGuild(guildId);
   const membershipQuery = getMembership(guildId);

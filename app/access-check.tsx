@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
+// GuildPass Mobile: Pull in react-native, expo, or external state libraries.
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useWallet } from "../src/features/wallet/useWallet";
 import { useAccessCheck } from "../src/features/access/useAccessCheck";
