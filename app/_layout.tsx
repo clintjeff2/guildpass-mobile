@@ -1,24 +1,29 @@
-// GuildPass Mobile: Import package module dependencies.
 import { Stack } from "expo-router";
-// GuildPass Mobile: Pull in react-native, expo, or external state libraries.
-import { QueryClientProvider } from "@tanstack/react-query";
-// GuildPass Mobile: Import package module dependencies.
-import { queryClient } from "../src/lib/queryClient";
-// GuildPass Mobile: Pull in react-native, expo, or external state libraries.
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { View } from "react-native";
+import { queryClient } from "../src/lib/queryClient";
+import { asyncStoragePersister } from "../src/lib/queryPersister";
+import { isPersistableQuery, QUERY_GC_TIME_MS } from "../src/lib/offlineCache";
+import "../src/lib/networkManager";
 
-// GuildPass Mobile: Core mobile screen or hook export definition.
 export default function RootLayout() {
-  // GuildPass Mobile: Return evaluated JSX layout or callback response.
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister: asyncStoragePersister,
+        maxAge: QUERY_GC_TIME_MS,
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) =>
+            query.state.status === "success" && isPersistableQuery(query.queryKey),
+        },
+      }}
+    >
       <View className="flex-1 bg-background">
         <Stack
-          // GuildPass Mobile: Enter functional execution container scope block.
           screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: "#f8fafc" },
-            // GuildPass Mobile: Exit functional execution container scope block.
           }}
         >
           <Stack.Screen name="index" />
@@ -29,9 +34,9 @@ export default function RootLayout() {
           <Stack.Screen name="access-check" />
           <Stack.Screen name="access-scanner" />
           <Stack.Screen name="settings" />
+          <Stack.Screen name="deep-link-error" />
         </Stack>
       </View>
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
-  // GuildPass Mobile: Exit functional execution container scope block.
 }

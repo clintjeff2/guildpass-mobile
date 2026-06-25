@@ -14,6 +14,8 @@ import { Card } from "../src/components/Card";
 import { WalletInput } from "../src/components/WalletInput";
 // GuildPass Mobile: Import package module dependencies.
 import { Button } from "../src/components/Button";
+import { StaleDataBanner } from "../src/components/StaleDataBanner";
+import { useNetworkStatus } from "../src/features/offline/useNetworkStatus";
 
 // GuildPass Mobile: Exported screen, component definition, or state hooks.
 export default function Profile() {
@@ -21,6 +23,7 @@ export default function Profile() {
   const router = useRouter();
   // GuildPass Mobile: Local UI-scoped constant or state representation.
   const { walletAddress, isConnected, connectManually, disconnect } = useWallet();
+  const { isOffline } = useNetworkStatus();
   // GuildPass Mobile: Variable binding and property initialization.
   const [inputValue, setInputValue] = useState(walletAddress || "");
   // GuildPass Mobile: Local UI-scoped constant or state representation.
@@ -28,16 +31,13 @@ export default function Profile() {
 
   // GuildPass Mobile: Variable binding and property initialization.
   const handleConnect = () => {
-    // GuildPass Mobile: Evaluate branch condition check for UI guards.
-    if (!inputValue.startsWith("0x") || inputValue.length !== 42) {
-      setError("Please enter a valid Ethereum address");
-      // GuildPass Mobile: Terminate block execution context and send back value.
+    const { success, error: validationError } = connectManually(inputValue);
+    if (!success) {
+      setError(validationError ?? "Invalid address");
       return;
-      // GuildPass Mobile: Exit functional execution container scope block.
     }
     setError(null);
-    connectManually(inputValue);
-    // GuildPass Mobile: Exit functional execution container scope block.
+    router.push("/guilds");
   };
 
   // GuildPass Mobile: Return evaluated JSX layout or callback response.
@@ -68,7 +68,9 @@ export default function Profile() {
             </Card>
           </View>
         ) : (
-          <View testID="profile-connected">
+          <View>
+            {isOffline ? <StaleDataBanner reason="offline" /> : null}
+
             <Card className="mb-6">
               <Text className="text-text-muted text-sm mb-1">CONNECTED WALLET</Text>
               <Text className="text-lg font-bold text-text mb-4" numberOfLines={1} testID="connected-wallet-address">
