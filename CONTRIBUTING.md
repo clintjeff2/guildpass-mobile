@@ -65,10 +65,16 @@ pnpm install
 cp .env.example .env
 # Edit .env — set EXPO_PUBLIC_API_URL if connecting to live guildpass-core
 
-# 4. Start the Expo dev server
+# 4. Initialize EAS (Optional for local development)
+# If you plan to use EAS Build for testing your fork, you must initialize your own EAS project:
+npx eas init --id <YOUR_PROJECT_ID>
+# Or create a new one:
+npx eas init
+
+# 5. Start the Expo dev server
 pnpm start
 
-# 5. Open on device / simulator
+# 6. Open on device / simulator
 pnpm ios      # iOS simulator
 pnpm android  # Android emulator
 # Or scan the QR code in Expo Go
