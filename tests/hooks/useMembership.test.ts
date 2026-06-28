@@ -216,7 +216,9 @@ describe("useMembership – getUserRoles", () => {
   });
 
   it("does not call SDK when walletAddress is falsy (enabled guard)", () => {
-    const shouldFetch = !!("" as string) && !!"guild_abc";
+    const walletAddress = "";
+    const guildId = "guild_abc";
+    const shouldFetch = !!walletAddress && !!guildId;
     expect(shouldFetch).toBe(false);
     expect(sdk.roles.getUserRoles).not.toHaveBeenCalled();
   });

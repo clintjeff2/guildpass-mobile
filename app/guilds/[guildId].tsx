@@ -47,18 +47,36 @@ export default function GuildDetail() {
   }
 
   if (guildError && !guild) {
-    return <ErrorState message="Failed to load guild details" />;
+    return (
+      <ErrorState
+        message={
+          staleState.isOffline
+            ? "You are offline. Please reconnect to load guild details."
+            : "Failed to load guild details"
+        }
+      />
+    );
   }
 
   if (!guild) {
-    return <ErrorState message="Failed to load guild details" />;
+    return (
+      <ErrorState
+        message={
+          staleState.isOffline
+            ? "You are offline. Please reconnect to load guild details."
+            : "Failed to load guild details"
+        }
+      />
+    );
   }
 
   return (
     <View className="flex-1 bg-background" testID="guild-detail-screen">
       <AppHeader title={guild.name} showBack />
       <ScrollView className="flex-1 px-4 py-6">
-        {staleState.isStale && staleState.reason ? (
+        {staleState.isOffline ? (
+          <StaleDataBanner reason="offline" lastSyncedAt={staleState.lastSyncedAt} />
+        ) : staleState.isStale && staleState.reason ? (
           <StaleDataBanner reason={staleState.reason} lastSyncedAt={staleState.lastSyncedAt} />
         ) : null}
 
@@ -109,7 +127,7 @@ export default function GuildDetail() {
           <Text className="text-lg font-bold text-text mb-3">Available Roles</Text>
           <View className="flex-row flex-wrap" testID="guild-roles-list">
             {roles && roles.length > 0 ? (
-              roles.map((role) => <RoleBadge key={role.id} name={role.name} />)
+              roles.map((role: { id: string; name: string }) => <RoleBadge key={role.id} name={role.name} />)
             ) : (
               <Text className="text-text-muted italic">No roles defined for this guild.</Text>
             )}

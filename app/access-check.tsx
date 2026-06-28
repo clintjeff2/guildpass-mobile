@@ -14,6 +14,8 @@ import { LoadingState } from "../src/components/LoadingState";
 import { AccessHistoryList } from "../src/components/AccessHistoryList";
 import { validateAndNormalizeAddress } from "../src/lib/walletValidation";
 import { useAccessHistoryStore } from "../src/features/access/accessHistory.store";
+import { useNetworkStatus } from "../src/features/offline/useNetworkStatus";
+import { StaleDataBanner } from "../src/components/StaleDataBanner";
 
 export default function AccessCheck() {
   const router = useRouter();
@@ -25,6 +27,7 @@ export default function AccessCheck() {
   const [scanError, setScanError] = useState<string | null>(null);
   const [scannedPayload, setScannedPayload] = useState<ParsedAccessQrPayload | null>(null);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const { isOffline } = useNetworkStatus();
 
   const accessCheck = useAccessCheck();
   const {
@@ -128,6 +131,7 @@ export default function AccessCheck() {
     <View className="flex-1 bg-background" testID="access-check-screen">
       <AppHeader title="Access Check" showBack />
       <ScrollView className="flex-1 px-4 py-6">
+        {isOffline ? <StaleDataBanner reason="offline" cautionary /> : null}
         <Card className="mb-6">
           <WalletInput
             value={address}
@@ -176,7 +180,7 @@ export default function AccessCheck() {
             onPress={handleCheck}
             className="mt-6"
             loading={isPending}
-            disabled={!address || !guildId || !resourceId || !!addressError}
+            disabled={!address || !guildId || !resourceId || !!addressError || isOffline}
           />
         </Card>
 

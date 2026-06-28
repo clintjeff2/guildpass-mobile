@@ -5,6 +5,14 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ACCESS_DENIED_FIXTURE, ACCESS_GRANTED_FIXTURE } from "./fixtures/access.fixtures";
 import AccessCheck from "../app/access-check";
 import { useAccessHistoryStore } from "../src/features/access/accessHistory.store";
+import { useNetworkStore } from "../src/features/network/connectivityService";
+
+vi.mock("@react-native-community/netinfo", () => ({
+  default: {
+    addEventListener: vi.fn(() => () => {}),
+    fetch: vi.fn().mockResolvedValue({ isConnected: true, isInternetReachable: true }),
+  },
+}));
 
 const routerMocks = vi.hoisted(() => ({
   push: vi.fn(),
@@ -90,6 +98,7 @@ describe("AccessCheck screen", () => {
     vi.clearAllMocks();
     guildPassClientMock.checkAccess.mockReset().mockResolvedValue(ACCESS_GRANTED_FIXTURE);
     useAccessHistoryStore.setState({ historyByWallet: {}, hydrated: true });
+    useNetworkStore.setState({ isOnline: true, isOffline: false });
   });
 
   it("clears the previous result when inputs change after a completed check", async () => {
@@ -153,5 +162,21 @@ describe("AccessCheck screen", () => {
     expect(outputText(screen!)).toContain("Recent Access Checks");
     expect(outputText(screen!)).toContain("vip-door");
     expect(outputText(screen!)).toContain("Denied");
+  });
+
+  it("renders the offline banner and disables the check button when offline", async () => {
+    useNetworkStore.setState({ isOnline: false, isOffline: true });
+
+    let screen: ReactTestRenderer;
+
+    await act(async () => {
+      screen = renderScreen();
+    });
+
+    const screenText = outputText(screen!);
+    expect(screenText).toContain("You are offline. This access result may be outdated");
+
+    const checkButton = screen!.root.findByProps({ accessibilityLabel: "Check Access" });
+    expect(checkButton.props.disabled).toBe(true);
   });
 });

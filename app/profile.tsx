@@ -30,6 +30,7 @@ export default function Profile() {
     <View className="flex-1 bg-background" testID="profile-screen">
       <AppHeader title="Profile" />
       <ScrollView className="flex-1 px-4 py-6">
+        {isOffline ? <StaleDataBanner reason="offline" /> : null}
         {!isConnected ? (
           <View testID="wallet-connect-form">
             <Text className="text-2xl font-bold text-text mb-2">Connect Wallet</Text>
@@ -56,8 +57,6 @@ export default function Profile() {
           </View>
         ) : (
           <View>
-            {isOffline ? <StaleDataBanner reason="offline" /> : null}
-
             <Card className="mb-6">
               <Text className="text-text-muted text-sm mb-1">CONNECTED WALLET</Text>
               <Text

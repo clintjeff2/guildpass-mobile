@@ -5,9 +5,11 @@ import { useEffect } from "react";
 import { queryClient } from "../src/lib/queryClient";
 import { asyncStoragePersister } from "../src/lib/queryPersister";
 import { isPersistableQuery, QUERY_GC_TIME_MS } from "../src/lib/offlineCache";
-import "../src/lib/networkManager";
+import { initConnectivityService } from "../src/features/network/connectivityService";
 import { useWalletStore } from "../src/features/wallet/wallet.store";
 import { useSessionStore } from "../src/features/session/session.store";
+
+initConnectivityService();
 
 export default function RootLayout() {
   // Restore session state from wallet store on cold start
