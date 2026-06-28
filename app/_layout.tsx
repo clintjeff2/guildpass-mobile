@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { View } from "react-native";
-import { useEffect } from "react";
 import { queryClient } from "../src/lib/queryClient";
 import { asyncStoragePersister } from "../src/lib/queryPersister";
 import { isPersistableQuery, QUERY_GC_TIME_MS } from "../src/lib/offlineCache";
@@ -12,14 +11,6 @@ import { useSessionStore } from "../src/features/session/session.store";
 initConnectivityService();
 
 export default function RootLayout() {
-  // Restore session state from wallet store on cold start
-  useEffect(() => {
-    const { walletAddress } = useWalletStore.getState();
-    if (walletAddress) {
-      useSessionStore.getState().restoreSession({ walletAddress });
-    }
-  }, []);
-
   return (
     <PersistQueryClientProvider
       client={queryClient}

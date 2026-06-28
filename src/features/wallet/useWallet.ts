@@ -7,11 +7,18 @@ import { useSessionStore } from "../session/session.store";
 export const useWallet = (): {
   walletAddress: string | null;
   isConnected: boolean;
+  isHydrated: boolean;
   connectManually: (address: string) => { success: boolean; error?: string };
   connectWithConnector: (connector: WalletConnector) => Promise<{ success: boolean; error?: string }>;
   disconnect: () => void;
 } => {
-  const { walletAddress, isConnected, setWalletAddress, disconnect: storeDisconnect } = useWalletStore();
+  const {
+    walletAddress,
+    isConnected,
+    _hasHydrated: isHydrated,
+    setWalletAddress,
+    disconnect: storeDisconnect,
+  } = useWalletStore();
   const { startSession, endSession } = useSessionStore.getState();
 
   const connectManually = (address: string): { success: boolean; error?: string } => {
@@ -41,7 +48,7 @@ export const useWallet = (): {
     void endSession();
   };
 
-  return { walletAddress, isConnected, connectManually, connectWithConnector, disconnect };
+  return { walletAddress, isConnected, isHydrated, connectManually, connectWithConnector, disconnect };
 };
 
 /** Convenience — build a manual connector and connect in one step */

@@ -14,6 +14,7 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
+    setupFiles: ["tests/setup.ts"],
     // Collect coverage from src only, exclude generated files
     coverage: {
       include: ["src/**/*.ts", "src/**/*.tsx"],
