@@ -82,6 +82,14 @@
         {
           "cameraPermission": "Allow GuildPass to scan access check QR codes."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
       ]
     ]
   }
