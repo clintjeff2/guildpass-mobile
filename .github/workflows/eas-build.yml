@@ -29,35 +29,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install pnpm
-        run: npm install -g pnpm@8
-
-      - name: Checkout SDK
-        run: |
-          git clone --depth 1 https://github.com/Adamantine-Guild/guildpass-sdk.git "${{ github.workspace }}/../guildpass-sdk"
-
-      - name: Apply SDK patches
-        run: |
-          cd "${{ github.workspace }}/../guildpass-sdk"
-          git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
-
-      - name: Debug
-        run: |
-          echo "=== WORKSPACE ==="
-          echo "${{ github.workspace }}"
-          echo "=== PWD ==="
-          pwd
-          echo "=== LS ==="
-          ls -la
-          echo "=== SDK package.json ==="
-          head -25 "${{ github.workspace }}/../guildpass-sdk/package.json"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npx --yes pnpm@8 install
+        run: pnpm install
 
       - name: Type check
         run: npx --yes pnpm@8 typecheck
@@ -79,24 +62,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install pnpm
-        run: npm install -g pnpm@8
-
-      - name: Checkout SDK
-        run: |
-          git clone --depth 1 https://github.com/Adamantine-Guild/guildpass-sdk.git "${{ github.workspace }}/../guildpass-sdk"
-
-      - name: Apply SDK patches
-        run: |
-          cd "${{ github.workspace }}/../guildpass-sdk"
-          git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npx --yes pnpm@8 install
+        run: pnpm install
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8

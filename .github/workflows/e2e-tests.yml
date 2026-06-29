@@ -17,23 +17,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
-
-      - name: Checkout SDK
-        run: |
-          git clone --depth 1 https://github.com/Adamantine-Guild/guildpass-sdk.git "${{ github.workspace }}/../guildpass-sdk"
-
-      - name: Apply SDK patches
-        run: |
-          cd "${{ github.workspace }}/../guildpass-sdk"
-          git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Install Maestro
         run: |
@@ -103,23 +99,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
-
-      - name: Checkout SDK
-        run: |
-          git clone --depth 1 https://github.com/Adamantine-Guild/guildpass-sdk.git "${{ github.workspace }}/../guildpass-sdk"
-
-      - name: Apply SDK patches
-        run: |
-          cd "${{ github.workspace }}/../guildpass-sdk"
-          git apply "${{ github.workspace }}/patches/guildpass-sdk.patch"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Setup Java
         uses: actions/setup-java@v4
