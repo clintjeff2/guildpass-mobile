@@ -257,7 +257,7 @@ We welcome contributions from the community! See [CONTRIBUTING.md](./CONTRIBUTIN
 
 Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
 
----
+----
 
 <div align="center">
   <p>Crafted with precision by the <b>GuildPass</b> team</p>
