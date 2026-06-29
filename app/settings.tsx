@@ -3,6 +3,7 @@ import { useWallet } from "../src/features/wallet/useWallet";
 import { AppHeader } from "../src/components/AppHeader";
 import { Card } from "../src/components/Card";
 import { Button } from "../src/components/Button";
+import { WalletRequired } from "../src/components/WalletRequired";
 import { appConfig } from "../src/config/appConfig";
 import { resetAppState } from "../src/lib/resetAppState";
 import React, { useState } from "react";
@@ -51,16 +52,18 @@ export default function Settings() {
 
         <Text className="text-lg font-bold text-text mb-3">Account</Text>
         <Card className="mb-8">
-          <Text className="text-text-muted mb-4">
-            will disconnect your current wallet address and clear any local cache.
-          </Text>
-          <Button
-            title="Reset App State"
-            onPress={handleReset}
-            variant="danger"
-            loading={isResetting}
-            disabled={!isConnected || isResetting}
-          />
+          <WalletRequired redirect={false}>
+            <Text className="text-text-muted mb-4">
+              will disconnect your current wallet address and clear any local cache.
+            </Text>
+            <Button
+              title="Reset App State"
+              onPress={handleReset}
+              variant="danger"
+              loading={isResetting}
+              disabled={isResetting}
+            />
+          </WalletRequired>
         </Card>
 
         <View className="items-center mt-12">

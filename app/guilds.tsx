@@ -7,6 +7,7 @@ import { GuildCard } from "../src/components/GuildCard";
 import { LoadingState } from "../src/components/LoadingState";
 import { ErrorState } from "../src/components/ErrorState";
 import { EmptyState } from "../src/components/EmptyState";
+import { WalletRequired } from "../src/components/WalletRequired";
 import React from "react";
 
 export default function Guilds() {
@@ -23,31 +24,33 @@ export default function Guilds() {
   ];
 
   return (
-    <View className="flex-1 bg-background" testID="guilds-screen">
-      <AppHeader title="My Guilds" showBack />
-      <FlatList
-        data={exampleGuilds}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16 }}
-        testID="guilds-list"
-        renderItem={({ item }) => (
-          <GuildCard
-            name={item.name}
-            id={item.id}
-            isActive={item.isActive}
-            roleCount={item.roleCount}
-            onPress={() => router.push(`/guilds/${item.id}`)}
-          />
-        )}
-        ListEmptyComponent={
-          <EmptyState
-            title="No Guilds Found"
-            message="You are not a member of any guilds yet."
-            actionTitle="Explore Guilds"
-            onAction={() => {}}
-          />
-        }
-      />
-    </View>
+    <WalletRequired>
+      <View className="flex-1 bg-background" testID="guilds-screen">
+        <AppHeader title="My Guilds" showBack />
+        <FlatList
+          data={exampleGuilds}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ padding: 16 }}
+          testID="guilds-list"
+          renderItem={({ item }) => (
+            <GuildCard
+              name={item.name}
+              id={item.id}
+              isActive={item.isActive}
+              roleCount={item.roleCount}
+              onPress={() => router.push(`/guilds/${item.id}`)}
+            />
+          )}
+          ListEmptyComponent={
+            <EmptyState
+              title="No Guilds Found"
+              message="You are not a member of any guilds yet."
+              actionTitle="Explore Guilds"
+              onAction={() => {}}
+            />
+          }
+        />
+      </View>
+    </WalletRequired>
   );
 }
